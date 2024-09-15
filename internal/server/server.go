@@ -1,26 +1,33 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/sylphritz/go-microservice-template/internal/routes"
 )
 
 type Server struct {
-	router *chi.Mux
+	httpServer *http.Server
 }
 
-func New() *Server {
-	return &Server{
-		router: routes.RegisterRoutes(),
-	}
-}
-
-func (s *Server) Start(host string, port int) error {
+func New(host string, port int) *Server {
 	addr := fmt.Sprintf("%v:%v", host, port)
-	log.Printf("Server successfully started: %v\n", addr)
-	return http.ListenAndServe(addr, s.router)
+	srv := &http.Server{
+		Addr:    addr,
+		Handler: routes.RegisterRoutes(),
+	}
+
+	return &Server{srv}
+}
+
+func (s *Server) Start() error {
+	log.Printf("Server successfully started: %v\n", s.httpServer.Addr)
+	return s.httpServer.ListenAndServe()
+}
+
+func (s *Server) Shutdown(ctx context.Context) error {
+	return s.httpServer.Shutdown(ctx)
 }
