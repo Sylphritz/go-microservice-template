@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -18,6 +19,8 @@ func New() *Server {
 	}
 }
 
-func (s *Server) Start(port string) error {
-	return http.ListenAndServe(fmt.Sprintf("localhost:%s", port), s.router)
+func (s *Server) Start(host string, port int) error {
+	addr := fmt.Sprintf("%v:%v", host, port)
+	log.Printf("Server successfully started: %v\n", addr)
+	return http.ListenAndServe(addr, s.router)
 }
