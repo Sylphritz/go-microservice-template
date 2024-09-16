@@ -14,7 +14,7 @@ var C Config
 func Load() {
 	// Load .env file if present
 	if err := godotenv.Load(); err != nil {
-		log.Printf(".env file not found: %v", err)
+		log.Printf(".env file not found (skipping): %v", err)
 	}
 
 	viper.SetEnvPrefix(envPrefix)
