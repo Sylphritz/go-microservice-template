@@ -1,0 +1,18 @@
+# Project
+.air.toml
+.cz.toml
+CHANGELOG.md
+README.md
+Makefile
+
+# Git
+.gitignore
+
+# Temporary files
+tmp/
+
+# Environments
+.env
+.env.*
+*.env
+*.env.*
